@@ -1,0 +1,142 @@
+\section*{I. Caso: ventas de una cafetería}
+
+Una cafetería registra sus ventas durante 60 semanas. Interesa medir el efecto de la publicidad digital y de la lluvia, y saber si en las semanas con promoción 2x1 cambia la respuesta a la publicidad. Hubo promoción en 30 semanas, 15 en cada mitad de la muestra. En la semana 31 abrió una cafetería competidora a dos calles. Los datos son sintéticos.
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Variable & Significado & Unidad\\
+\midrule
+$Y$ & Ventas semanales & miles de pesos\\
+$X$ & Gasto semanal en publicidad digital & miles de pesos\\
+$Z$ & Días con lluvia en la semana & días\\
+$D$ & 1 si hubo promoción 2x1 & indicador\\
+$XD$ & Interacción entre $X$ y $D$ & miles de pesos\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+En la muestra, $X$ va de $2.17$ a $9.82$ miles de pesos. El orden de las columnas de la matriz de diseño es $(1,X,Z,D,XD)$. Las cifras se presentan redondeadas; la inversa, con tres cifras significativas. Usa estos valores y cuatro decimales en los cálculos intermedios.
+
+\subsection*{Datos del modelo completo}
+
+\[
+X^\top X=\begin{pmatrix}60.00 & 366.49 & 160.00 & 30.00 & 186.29\\366.49 & 2509.37 & 998.64 & 186.29 & 1300.15\\160.00 & 998.64 & 594.00 & 82.00 & 549.72\\30.00 & 186.29 & 82.00 & 30.00 & 186.29\\186.29 & 1300.15 & 549.72 & 186.29 & 1300.15\end{pmatrix},\qquad
+X^\top Y=\begin{pmatrix}3240.62\\20335.15\\8569.63\\1782.52\\11371.36\end{pmatrix},
+\]
+\[
+\textstyle Y^\top Y=178222.63,\qquad \sum_t Y_t=3240.62,\qquad n=60.
+\]
+{\small
+\[
+(X^\top X)^{-1}=\begin{pmatrix}3.99\times10^{-1} & -5.09\times10^{-2} & -2.31\times10^{-2} & -3.77\times10^{-1} & 5.75\times10^{-2}\\-5.09\times10^{-2} & 8.04\times10^{-3} & 1.01\times10^{-3} & 4.99\times10^{-2} & -8.33\times10^{-3}\\-2.31\times10^{-2} & 1.01\times10^{-3} & 6.55\times10^{-3} & 1.67\times10^{-2} & -2.87\times10^{-3}\\-3.77\times10^{-1} & 4.99\times10^{-2} & 1.67\times10^{-2} & 6.63\times10^{-1} & -9.80\times10^{-2}\\5.75\times10^{-2} & -8.33\times10^{-3} & -2.87\times10^{-3} & -9.80\times10^{-2} & 1.61\times10^{-2}\end{pmatrix}
+\]}
+\[
+\hat\beta=\begin{pmatrix}\hat\beta_0\\\hat\beta_1\\\hat\beta_2\\\hat\beta_3\\\hat\beta_4\end{pmatrix}=(X^\top X)^{-1}X^\top Y=\begin{pmatrix}42.2811\\1.4708\\-0.9662\\4.9766\\0.9127\end{pmatrix}.
+\]
+
+\subsection*{Residuos del modelo completo}
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Cantidad & Valor\\
+\midrule
+$\sum e_t$ & $0.0000$\\
+$\sum e_t^2=SSE$ & $327.8156$\\
+$\sum e_t^3$ & $19.1754$\\
+$\sum e_t^4$ & $5775.4357$\\
+$\sum_{t=2}^{60}(e_t-e_{t-1})^2$ & $623.2036$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Regresiones auxiliares y modelos adicionales}
+
+\begin{center}
+\begin{tabular}{@{}lllr@{}}
+\toprule
+Regresión & Variable dependiente & Regresoras (con constante) & Resultado\\
+\midrule
+Breusch--Pagan & $e_t^2$ & $X,Z,D,XD$; $n=60$ & $R^2=0.2201$\\
+Breusch--Godfrey & $e_t$ & $X_t,Z_t,D_t,X_tD_t,e_{t-1}$; $n=59$ & $R^2=0.0003$\\
+Auxiliar 1 & $X$ & $Z,D,XD$; $n=60$ & $R^2=0.5408$\\
+Auxiliar 2 & $Z$ & $X,D,XD$; $n=60$ & $R^2=0.0882$\\
+Auxiliar 3 & $D$ & $X,Z,XD$; $n=60$ & $R^2=0.8994$\\
+Auxiliar 4 & $XD$ & $X,Z,D$; $n=60$ & $R^2=0.9140$\\
+Restringido & $Y$ & $X,Z$; $n=60$ & $SSE_R=2035.8697$\\
+Semanas 1 a 30 & $Y$ & $X,Z,D,XD$; $n=30$ & $SSE_1=147.8282$\\
+Semanas 31 a 60 & $Y$ & $X,Z,D,XD$; $n=30$ & $SSE_2=61.7348$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Valores críticos al 5\,\%}
+
+\begin{center}
+\begin{tabular}{@{}lr@{\qquad}lr@{\qquad}lr@{}}
+\toprule
+$t_{55;\,0.975}$ & $2.004$ & $F_{4,55;\,0.95}$ & $2.540$ & $\chi^2_{1;\,0.95}$ & $3.841$\\
+$F_{2,55;\,0.95}$ & $3.165$ & $F_{3,56;\,0.95}$ & $2.769$ & $\chi^2_{2;\,0.95}$ & $5.991$\\
+$F_{5,50;\,0.95}$ & $2.400$ & $d_L,\ d_U$ ($n=60$, 4 regresoras) & $1.444,\ 1.727$ & $\chi^2_{4;\,0.95}$ & $9.488$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Preguntas (100 puntos)}
+
+Cada prueba se contesta con los cinco elementos de la nota 10 de la guía: nombre, hipótesis, estadístico con grados de libertad, valor crítico y decisión, y conclusión en el contexto del caso. Usa $\alpha=0.05$.
+
+\pregunta{1}{Especificación e interpretación}{14}
+\begin{enumerate}
+  \item Escribe el modelo poblacional y la dimensión de la matriz de diseño.
+  \item Indica qué producto da los estimadores y dónde están los $c_{jj}$.
+  \item Interpreta $\hat\beta_0$, $\hat\beta_1$, $\hat\beta_2$, $\hat\beta_3$ y $\hat\beta_4$ en las unidades del caso.
+  \item Escribe la recta estimada para $D=0$ y para $D=1$, y compara las dos sensibilidades a $X$.
+  \item ¿Para qué valor de $X$ las dos rectas dan la misma predicción, con $Z$ fija? ¿Está ese valor dentro del rango de los datos? ¿Qué concluyes sobre el efecto de $D$?
+\end{enumerate}
+
+
+\pregunta{2}{Tabla ANOVA y ajuste}{12}
+\begin{enumerate}
+  \item Calcula $SST$ a partir de $Y^\top Y$ y $\sum Y_t$, y después $SSR$.
+  \item Construye la tabla ANOVA: fuente, grados de libertad, sumas de cuadrados ($SSR$, $SSE$, $SST$), cuadrados medios ($MSR$, $MSE$) y $F$.
+  \item Calcula $R^2$, $R^2$ ajustada y $s$.
+  \item Realiza la prueba de significancia global.
+\end{enumerate}
+
+
+\pregunta{3}{Inferencia individual}{16}
+\begin{enumerate}
+  \item Calcula los errores estándar y los estadísticos $t$ de $\hat\beta_3$ y $\hat\beta_4$. Contrasta $H_0:\beta_j=0$ para cada uno e interpreta.
+  \item Construye el intervalo de confianza al 95\,\% para $\beta_4$.
+  \item La sensibilidad a $X$ con $D=1$ es $\theta=\beta_1+\beta_4$. Calcula su error estándar con $\widehat{\mathrm{Var}}(\hat\beta_1+\hat\beta_4)=MSE\,(c_{11}+c_{44}+2c_{14})$ y contrasta $H_0:\theta=0$.
+\end{enumerate}
+
+
+\pregunta{4}{Distribución y dependencia de los errores}{14}
+\begin{enumerate}
+  \item Calcula $m_2$, $m_3$, $m_4$, la asimetría $S$, la curtosis $K$, el exceso de curtosis y el estadístico de Jarque--Bera. Contrasta normalidad.
+  \item Calcula el estadístico de Durbin--Watson y $\hat\rho\approx1-DW/2$. Decide con $d_L$ y $d_U$.
+\end{enumerate}
+
+
+\pregunta{5}{Diagnóstico del modelo}{18}
+\begin{enumerate}
+  \item Realiza la prueba de Breusch--Pagan.
+  \item Realiza la prueba de Breusch--Godfrey de orden uno. ¿Coincide con Durbin--Watson?
+  \item Calcula los cuatro VIF de dos maneras: con $1/(1-R_j^2)$ y con $S_{xx,j}\,c_{jj}$, donde $S_{xx,j}=(X^\top X)_{jj}-(X^\top X)_{0j}^2/n$ se obtiene de la primera fila y la diagonal de $X^\top X$. Contrasta la significancia de cada regresión auxiliar e interpreta.
+\end{enumerate}
+
+
+\pregunta{6}{Omisión de variables}{10}
+Compara el modelo completo con el modelo de $Y$ sobre $X$ y $Z$. Indica las restricciones, calcula la prueba $F$ parcial, decide y explica qué consecuencias tendría usar el modelo restringido.
+
+
+\pregunta{7}{Estabilidad entre subperiodos}{8}
+Realiza la prueba de Chow para los bloques 1 a 30 y 31 a 60. Escribe $H_0$ como igualdad de los cinco parámetros, calcula el estadístico, decide y comenta qué implica el resultado para la dueña de la cafetería.
+
+
+\pregunta{8}{Síntesis}{8}
+Clasifica los indicadores y pruebas que usaste según la propiedad que estudian, y distingue las pruebas formales de los indicadores. Con base en tus resultados, ¿qué cambiarías del modelo o de la forma de hacer inferencia? Explica por qué una $R^2$ alta no garantiza que la inferencia sea válida.
+

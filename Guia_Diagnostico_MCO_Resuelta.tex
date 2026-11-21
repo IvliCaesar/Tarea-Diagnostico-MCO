@@ -1,0 +1,97 @@
+\documentclass[11pt,letterpaper]{article}
+\input{preambulo}
+
+\begin{document}
+
+\encabezado{GUÍA DE DIAGNÓSTICO DEL MODELO\\[2pt] DE REGRESIÓN, CON UN CASO RESUELTO}
+
+Esta guía reúne las herramientas para estudiar un modelo con intercepto, tres regresoras y una interacción, y las aplica a un caso resuelto paso a paso. Las soluciones están en {\color{azul}azul}. La tarea tiene la misma estructura, con otro caso.
+
+\section*{I. Notas}
+
+\nota{1. Modelo con interacción} Con una variable indicadora $D$ y una interacción,
+\[
+Y_t=\beta_0+\beta_1X_t+\beta_2Z_t+\beta_3D_t+\beta_4X_tD_t+u_t.
+\]
+Si $D=0$, la pendiente de $X$ es $\beta_1$; si $D=1$, es $\beta_1+\beta_4$. El coeficiente $\beta_3$ mide el cambio del intercepto \emph{en $X=0$}, y $\beta_4$ el cambio de la pendiente. La diferencia entre las dos rectas es $\beta_3+\beta_4X$, que se anula en $X^*=-\beta_3/\beta_4$. Si $X=0$ queda fuera del rango de los datos, $\beta_3$ describe una extrapolación; centrar $X$, es decir, usar $X-\bar X$, hace que $\beta_3$ mida el efecto de $D$ en la media de $X$, sin cambiar el ajuste. Que $D$ no sea significativa por separado no dice nada sobre la significancia conjunta de $D$ y $XD$.
+
+\nota{2. Estimación y tabla ANOVA} Con $n$ observaciones y $p$ parámetros, incluido el intercepto, $\mathbf X$ es de $n\times p$ y
+\[
+\hat\beta=\begin{pmatrix}\hat\beta_0\\\vdots\\\hat\beta_{p-1}\end{pmatrix}=(X^\top X)^{-1}X^\top Y,\qquad e=Y-\mathbf X\hat\beta,\qquad \widehat{\mathrm{Var}}(\hat\beta)=MSE\,(X^\top X)^{-1}.
+\]
+Las sumas de cuadrados son
+\[
+SST=\sum_t(Y_t-\bar Y)^2=Y^\top Y-\frac{\bigl(\sum_tY_t\bigr)^2}{n},\qquad SSE=\sum_te_t^2,\qquad SSR=\sum_t(\hat Y_t-\bar Y)^2=SST-SSE,
+\]
+donde la última igualdad vale cuando el modelo tiene intercepto. Cada cuadrado medio es una suma de cuadrados entre sus grados de libertad, y la tabla ANOVA los reúne:
+\begin{center}
+\begin{tabular}{@{}llll l@{}}
+\toprule
+Fuente & gl & Suma de cuadrados & Cuadrado medio & $F$\\
+\midrule
+Regresión & $p-1$ & $SSR$ & $MSR=SSR/(p-1)$ & $MSR/MSE$\\
+Residuos & $n-p$ & $SSE$ & $MSE=SSE/(n-p)$ & \\
+Total & $n-1$ & $SST$ & & \\
+\bottomrule
+\end{tabular}
+\end{center}
+Además
+\[
+R^2=1-\frac{SSE}{SST},\qquad R^2_a=1-\frac{SSE/(n-p)}{SST/(n-1)},\qquad s=\sqrt{MSE}.
+\]
+
+\nota{3. Pruebas $t$, intervalos y combinaciones lineales} Si $c_{jj}$ es el elemento diagonal $j$ de $(X^\top X)^{-1}$, entonces $EE(\hat\beta_j)=\sqrt{MSE\,c_{jj}}$ y, para $H_0:\beta_j=\beta_{j,0}$ contra $H_1:\beta_j\neq\beta_{j,0}$,
+\[
+t_j=\frac{\hat\beta_j-\beta_{j,0}}{EE(\hat\beta_j)}\sim t_{n-p}\ \text{bajo }H_0,\qquad IC_{95\%}(\beta_j)=\hat\beta_j\pm t_{n-p;\,0.975}\,EE(\hat\beta_j).
+\]
+Para una combinación como $\theta=\beta_1+\beta_4$, la pendiente con $D=1$, hace falta la covarianza: $\widehat{\mathrm{Var}}(\hat\beta_1+\hat\beta_4)=MSE\,(c_{11}+c_{44}+2c_{14})$.
+
+\nota{4. Pruebas $F$} La prueba global contrasta $H_0:\beta_1=\dots=\beta_{p-1}=0$ con
+\[
+F=\frac{MSR}{MSE}=\frac{SSR/(p-1)}{SSE/(n-p)}\sim F_{p-1,\,n-p}.
+\]
+La prueba $F$ parcial compara un modelo completo $C$ con uno restringido $R$ anidado en él, con $q=p_C-p_R$ restricciones:
+\[
+F=\frac{(SSE_R-SSE_C)/q}{SSE_C/(n-p_C)}\sim F_{q,\,n-p_C}.
+\]
+No confundas el valor crítico, que es un cuantil, con el valor $p$, que es una probabilidad de cola.
+
+\nota{5. Normalidad} Con intercepto, $\bar e=0$. Define $m_r=n^{-1}\sum e_t^r$. La asimetría y la curtosis son $S=m_3/m_2^{3/2}$ y $K=m_4/m_2^2$, y
+\[
+JB=\frac n6\Bigl(S^2+\frac{(K-3)^2}{4}\Bigr)\ \stackrel{a}{\sim}\ \chi^2_2\ \text{bajo normalidad}.
+\]
+La prueba es asintótica: con muestras pequeñas tiene poca potencia.
+
+\nota{6. Autocorrelación} El estadístico de Durbin--Watson es
+\[
+DW=\frac{\sum_{t=2}^n(e_t-e_{t-1})^2}{\sum_{t=1}^ne_t^2}\approx2(1-\hat\rho).
+\]
+Contra autocorrelación positiva: si $DW<d_L$ se rechaza $H_0$; si $DW>d_U$ no se rechaza; entre $d_L$ y $d_U$ la prueba no decide. Contra autocorrelación negativa se usa $4-DW$ con las mismas cotas. Durbin--Watson exige regresoras estrictamente exógenas. La prueba de Breusch--Godfrey de orden uno regresa $e_t$ sobre las regresoras y $e_{t-1}$, con $t=2,\dots,n$:
+\[
+LM_{BG}=(n-1)R^2_{aux}\ \stackrel{a}{\sim}\ \chi^2_1\ \text{bajo }H_0:\rho=0.
+\]
+Con autocorrelación, MCO sigue siendo insesgado, pero los errores estándar convencionales no son válidos; se usan errores estándar HAC (Newey--West) o se modela la dinámica.
+
+\nota{7. Heterocedasticidad} La prueba de Breusch--Pagan regresa $e_t^2$ sobre las $p-1$ regresoras:
+\[
+LM_{BP}=nR^2_{aux}\ \stackrel{a}{\sim}\ \chi^2_{p-1}\ \text{bajo }H_0:\mathrm{Var}(u_t\mid X)=\sigma^2.
+\]
+Con heterocedasticidad, MCO sigue siendo insesgado; las pruebas se hacen con errores estándar robustos (White).
+
+\nota{8. Multicolinealidad} Para cada regresora $x_j$, la regresión auxiliar sobre las demás da $R_j^2$, y
+\[
+VIF_j=\frac1{1-R_j^2}=S_{xx,j}\,c_{jj},\qquad S_{xx,j}=\sum_t(x_{tj}-\bar x_j)^2=(X^\top X)_{jj}-\frac{(X^\top X)_{0j}^2}{n},
+\]
+donde $(X^\top X)_{0j}=\sum_tx_{tj}$ está en la primera fila. El VIF es un indicador, no una prueba: dice cuántas veces crece la varianza de $\hat\beta_j$ respecto de regresoras sin correlación. La prueba $F$ de cada auxiliar, $F=\frac{R_j^2/(p-2)}{(1-R_j^2)/(n-p+1)}$, contrasta si hay relación lineal, lo cual no equivale a multicolinealidad severa. Con interacciones, $D$ y $XD$ pueden tener VIF altos solo por la parametrización: si $X>0$, la columna $XD$ se parece a $D$. Centrar $X$ reduce esos VIF sin cambiar el ajuste.
+
+\nota{9. Estabilidad: prueba de Chow} Para contrastar si los $p$ parámetros son iguales en dos subperiodos, con $SSE_P$ del modelo con todos los datos y $SSE_1$, $SSE_2$ de cada bloque,
+\[
+F_{Chow}=\frac{[SSE_P-(SSE_1+SSE_2)]/p}{(SSE_1+SSE_2)/(n_1+n_2-2p)}\sim F_{p,\,n_1+n_2-2p}.
+\]
+La prueba presupone la misma varianza del error en los dos bloques.
+
+\nota{10. Cómo contestar una prueba} Cada respuesta tiene cinco elementos: (i) el nombre de la prueba; (ii) las hipótesis nula y alternativa; (iii) el estadístico y sus grados de libertad; (iv) el valor crítico, o el valor $p$, y la decisión; (v) una conclusión en el contexto del caso. No rechazar $H_0$ no demuestra que sea verdadera.
+
+\input{caso_electrico}
+
+\end{document}

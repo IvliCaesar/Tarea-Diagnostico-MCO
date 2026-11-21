@@ -1,0 +1,223 @@
+\section*{II. Caso: consumo eléctrico de una planta industrial}
+
+Una planta de manufactura registra su consumo eléctrico durante 60 meses. Interesa medir cómo responde el consumo a la temperatura y a la tarifa, y si el sistema de gestión de energía, que operó del mes 16 al 45, cambió esa respuesta. Cada mitad de la muestra contiene 15 meses con el sistema y 15 sin él. En el mes 31 la planta renovó su equipo de aire acondicionado. Los datos son sintéticos.
+
+\begin{center}
+\begin{tabular}{@{}lll@{}}
+\toprule
+Variable & Significado & Unidad\\
+\midrule
+$Y$ & Consumo eléctrico mensual & cientos de MWh\\
+$X$ & Temperatura media mensual menos 20\,°C & °C\\
+$Z$ & Cambio mensual de la tarifa eléctrica & \%\\
+$D$ & 1 si opera el sistema de gestión de energía & indicador\\
+$XD$ & Interacción entre $X$ y $D$ & °C\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+En la muestra, $X$ va de $-5.36$ a $5.41$ °C. El orden de las columnas de la matriz de diseño es $(1,X,Z,D,XD)$. Las cifras se presentan redondeadas; la inversa, con tres cifras significativas. Usa estos valores y cuatro decimales en los cálculos intermedios.
+
+\subsection*{Datos del modelo completo}
+
+\[
+X^\top X=\begin{pmatrix}60.00 & -3.52 & 35.69 & 30.00 & 0.91\\-3.52 & 533.15 & 38.35 & 0.91 & 223.47\\35.69 & 38.35 & 141.00 & 15.54 & 12.28\\30.00 & 0.91 & 15.54 & 30.00 & 0.91\\0.91 & 223.47 & 12.28 & 0.91 & 223.47\end{pmatrix},\qquad
+X^\top Y=\begin{pmatrix}702.66\\307.47\\418.53\\350.89\\100.33\end{pmatrix},
+\]
+\[
+\textstyle Y^\top Y=8506.33,\qquad \sum_t Y_t=702.66,\qquad n=60.
+\]
+{\small
+\[
+(X^\top X)^{-1}=\begin{pmatrix}3.75\times10^{-2} & 1.03\times10^{-3} & -5.91\times10^{-3} & -3.44\times10^{-2} & -7.21\times10^{-4}\\1.03\times10^{-3} & 3.31\times10^{-3} & -8.10\times10^{-4} & -6.15\times10^{-4} & -3.27\times10^{-3}\\-5.91\times10^{-3} & -8.10\times10^{-4} & 8.62\times10^{-3} & 1.46\times10^{-3} & 3.54\times10^{-4}\\-3.44\times10^{-2} & -6.15\times10^{-4} & 1.46\times10^{-3} & 6.70\times10^{-2} & 4.02\times10^{-4}\\-7.21\times10^{-4} & -3.27\times10^{-3} & 3.54\times10^{-4} & 4.02\times10^{-4} & 7.73\times10^{-3}\end{pmatrix}
+\]}
+\[
+\hat\beta=\begin{pmatrix}\hat\beta_0\\\hat\beta_1\\\hat\beta_2\\\hat\beta_3\\\hat\beta_4\end{pmatrix}=(X^\top X)^{-1}X^\top Y=\begin{pmatrix}12.0183\\0.8615\\-0.2463\\-0.2070\\-0.4471\end{pmatrix}.
+\]
+
+\subsection*{Residuos del modelo completo}
+
+\begin{center}
+\begin{tabular}{@{}lr@{}}
+\toprule
+Cantidad & Valor\\
+\midrule
+$\sum e_t$ & $0.0000$\\
+$\sum e_t^2=SSE$ & $17.2105$\\
+$\sum e_t^3$ & $-2.3848$\\
+$\sum e_t^4$ & $14.7359$\\
+$\sum_{t=2}^{60}(e_t-e_{t-1})^2$ & $22.4649$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Regresiones auxiliares y modelos adicionales}
+
+\begin{center}
+\begin{tabular}{@{}lllr@{}}
+\toprule
+Regresión & Variable dependiente & Regresoras (con constante) & Resultado\\
+\midrule
+Breusch--Pagan & $e_t^2$ & $X,Z,D,XD$; $n=60$ & $R^2=0.0391$\\
+Breusch--Godfrey & $e_t$ & $X_t,Z_t,D_t,X_tD_t,e_{t-1}$; $n=59$ & $R^2=0.1278$\\
+Auxiliar 1 & $X$ & $Z,D,XD$; $n=60$ & $R^2=0.4335$\\
+Auxiliar 2 & $Z$ & $X,D,XD$; $n=60$ & $R^2=0.0310$\\
+Auxiliar 3 & $D$ & $X,Z,XD$; $n=60$ & $R^2=0.0048$\\
+Auxiliar 4 & $XD$ & $X,Z,D$; $n=60$ & $R^2=0.4208$\\
+Restringido & $Y$ & $X,Z$; $n=60$ & $SSE_R=43.5911$\\
+Meses 1 a 30 & $Y$ & $X,Z,D,XD$; $n=30$ & $SSE_1=6.4525$\\
+Meses 31 a 60 & $Y$ & $X,Z,D,XD$; $n=30$ & $SSE_2=8.6334$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Valores críticos al 5\,\%}
+
+\begin{center}
+\begin{tabular}{@{}lr@{\qquad}lr@{\qquad}lr@{}}
+\toprule
+$t_{55;\,0.975}$ & $2.004$ & $F_{4,55;\,0.95}$ & $2.540$ & $\chi^2_{1;\,0.95}$ & $3.841$\\
+$F_{2,55;\,0.95}$ & $3.165$ & $F_{3,56;\,0.95}$ & $2.769$ & $\chi^2_{2;\,0.95}$ & $5.991$\\
+$F_{5,50;\,0.95}$ & $2.400$ & $d_L,\ d_U$ ($n=60$, 4 regresoras) & $1.444,\ 1.727$ & $\chi^2_{4;\,0.95}$ & $9.488$\\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\subsection*{Preguntas (100 puntos)}
+
+Cada prueba se contesta con los cinco elementos de la nota 10: nombre, hipótesis, estadístico con grados de libertad, valor crítico y decisión, y conclusión en el contexto del caso. Usa $\alpha=0.05$.
+
+\pregunta{1}{Especificación e interpretación}{14}
+\begin{enumerate}
+  \item Escribe el modelo poblacional y la dimensión de la matriz de diseño.
+  \item Indica qué producto da los estimadores y dónde están los $c_{jj}$.
+  \item Interpreta $\hat\beta_0$, $\hat\beta_1$, $\hat\beta_2$, $\hat\beta_3$ y $\hat\beta_4$ en las unidades del caso.
+  \item Escribe la recta estimada para $D=0$ y para $D=1$, y compara las dos sensibilidades a $X$.
+  \item ¿Para qué valor de $X$ las dos rectas dan la misma predicción, con $Z$ fija? ¿Está ese valor dentro del rango de los datos? ¿Qué concluyes sobre el efecto de $D$?
+\end{enumerate}
+
+\begin{solucion}
+\begin{enumerate}
+  \item $Y_t=\beta_0+\beta_1X_t+\beta_2Z_t+\beta_3D_t+\beta_4X_tD_t+u_t$, $t=1,\dots,60$. La matriz de diseño $\mathbf X$ es de $60\times5$, con columnas $(1,X,Z,D,XD)$: $n=60$, $p=5$ y $n-p=55$.
+  \item $\hat\beta=(X^\top X)^{-1}X^\top Y$ y $\widehat{\mathrm{Var}}(\hat\beta)=MSE\,(X^\top X)^{-1}$. Los $c_{jj}$ son la diagonal de $(X^\top X)^{-1}$: $c_{00}=3.75\times10^{-2}$, $c_{11}=3.31\times10^{-3}$, $c_{22}=8.62\times10^{-3}$, $c_{33}=6.70\times10^{-2}$ y $c_{44}=7.73\times10^{-3}$.
+  \item $\hat\beta_0=12.0183$: consumo previsto, en cientos de MWh, en un mes a 20\,°C ($X=0$), sin cambio de tarifa y sin el sistema. $\hat\beta_1=0.8615$: sin el sistema y con la tarifa fija, cada grado adicional eleva el consumo previsto en 86.2\,MWh. $\hat\beta_2=-0.2463$: un aumento de 1\,\% en la tarifa reduce el consumo previsto en 24.6\,MWh, con lo demás fijo. $\hat\beta_3=-0.2070$: cambio del consumo previsto al operar el sistema en un mes a 20\,°C. $\hat\beta_4=-0.4471$: cambio de la sensibilidad a la temperatura cuando opera el sistema.
+  \item Con $D=0$: $\hat Y=12.0183+0.8615X-0.2463Z$. Con $D=1$: $\hat Y=(12.0183-0.2070)+(0.8615-0.4471)X-0.2463Z=11.8114+0.4144X-0.2463Z$. Sin el sistema, cada grado eleva el consumo en 86.2\,MWh; con el sistema, en 41.4\,MWh: la sensibilidad a la temperatura baja a menos de la mitad.
+  \item La diferencia entre las rectas es $\hat Y_{D=1}-\hat Y_{D=0}=\hat\beta_3+\hat\beta_4X$, que vale cero en $X^*=-\hat\beta_3/\hat\beta_4=-(-0.2070)/(-0.4471)=-0.463$. Ese valor corresponde a 19.5\,°C y está dentro del rango de los datos. Como $\hat\beta_4<0$, para temperaturas mayores el sistema reduce el consumo previsto, y la reducción crece con el calor: a 25\,°C ($X=5$) es de $2.443$ cientos de MWh. Por eso $\hat\beta_3$ solo describe el efecto a 20\,°C, no el efecto del sistema en general.
+\end{enumerate}
+\end{solucion}
+
+\pregunta{2}{Tabla ANOVA y ajuste}{12}
+\begin{enumerate}
+  \item Calcula $SST$ a partir de $Y^\top Y$ y $\sum Y_t$, y después $SSR$.
+  \item Construye la tabla ANOVA: fuente, grados de libertad, sumas de cuadrados ($SSR$, $SSE$, $SST$), cuadrados medios ($MSR$, $MSE$) y $F$.
+  \item Calcula $R^2$, $R^2$ ajustada y $s$.
+  \item Realiza la prueba de significancia global.
+\end{enumerate}
+
+\begin{solucion}
+\begin{enumerate}
+  \item $SST=Y^\top Y-\bigl(\sum Y_t\bigr)^2/n=8506.33-702.66^2/60=8506.33-8228.85=277.4753$, y $SSR=SST-SSE=277.4753-17.2105=260.2648$.
+  \item \leavevmode
+  \begin{center}\small
+  \begin{tabular}{@{}llll l@{}}
+  \toprule
+  Fuente & gl & Suma de cuadrados & Cuadrado medio & $F$\\
+  \midrule
+  Regresión & $p-1=4$ & $SSR=260.2648$ & $MSR=SSR/4=65.0662$ & $MSR/MSE=207.93$\\
+  Residuos & $n-p=55$ & $SSE=17.2105$ & $MSE=SSE/55=0.3129$ & \\
+  Total & $n-1=59$ & $SST=277.4753$ & & \\
+  \bottomrule
+  \end{tabular}
+  \end{center}
+  Las sumas de cuadrados cumplen $SSR+SSE=SST$, igual que los grados de libertad: $4+55=59$.
+  \item $R^2=1-SSE/SST=0.9380$; $R^2_{a}=1-\dfrac{SSE/55}{SST/59}=1-\dfrac{0.3129}{4.7030}=0.9335$; $s=\sqrt{MSE}=0.5594$ cientos de MWh. El modelo explica el 93.8\,\% de la variación de $Y$.
+  \item $H_0:\beta_1=\beta_2=\beta_3=\beta_4=0$ contra $H_1$: alguna $\beta_j\neq0$, $j\ge1$. $F=\dfrac{MSR}{MSE}=\dfrac{SSR/4}{SSE/55}=\dfrac{65.0662}{0.3129}=207.93\sim F_{4,55}$ bajo $H_0$. Como $207.93>2.540$, se rechaza $H_0$: las cuatro regresoras explican conjuntamente $Y$.
+\end{enumerate}
+\end{solucion}
+
+\pregunta{3}{Inferencia individual}{16}
+\begin{enumerate}
+  \item Calcula los errores estándar y los estadísticos $t$ de $\hat\beta_3$ y $\hat\beta_4$. Contrasta $H_0:\beta_j=0$ para cada uno e interpreta.
+  \item Construye el intervalo de confianza al 95\,\% para $\beta_4$.
+  \item La sensibilidad a $X$ con $D=1$ es $\theta=\beta_1+\beta_4$. Calcula su error estándar con $\widehat{\mathrm{Var}}(\hat\beta_1+\hat\beta_4)=MSE\,(c_{11}+c_{44}+2c_{14})$ y contrasta $H_0:\theta=0$.
+\end{enumerate}
+
+\begin{solucion}
+\begin{enumerate}
+  \item $EE(\hat\beta_3)=\sqrt{MSE\,c_{33}}=\sqrt{0.3129\times6.70\times10^{-2}}=0.1448$ y $t_3=-0.2070/0.1448=-1.429$. $EE(\hat\beta_4)=\sqrt{0.3129\times7.73\times10^{-3}}=0.0492$ y $t_4=-0.4471/0.0492=-9.091$. En ambos casos $H_0:\beta_j=0$ contra $H_1:\beta_j\neq0$, con $t\sim t_{55}$ bajo $H_0$ y valor crítico $2.004$. Para $\beta_3$, $|t_3|=1.429<2.004$: no se rechaza $H_0$. A 20\,°C no hay evidencia de que el sistema cambie el consumo, lo cual no significa que el sistema no importe: su efecto también pasa por $XD$, y la pregunta 6 contrasta $D$ y $XD$ en conjunto. Para $\beta_4$, $|t_4|=9.091>2.004$: se rechaza $H_0$. El sistema cambia la sensibilidad del consumo a la temperatura.
+  \item $\hat\beta_4\pm t_{55;\,0.975}\,EE(\hat\beta_4)=-0.4471\pm2.004\times0.0492=[-0.5457,\ -0.3486]$. El intervalo no contiene el cero, en acuerdo con el inciso anterior.
+  \item $\hat\theta=\hat\beta_1+\hat\beta_4=0.4144$ y $c_{11}+c_{44}+2c_{14}=3.31\times10^{-3}+7.73\times10^{-3}+2(-3.27\times10^{-3})=4.50\times10^{-3}$, de modo que $EE(\hat\theta)=\sqrt{0.3129\times4.50\times10^{-3}}=0.0375$ y $t=0.4144/0.0375=11.04$. Como $|t|>2.004$, se rechaza $H_0:\theta=0$: con el sistema, el consumo sigue respondiendo a la temperatura, con 41.4\,MWh por grado; el intervalo al 95\,\% es $[0.3392,\ 0.4896]$. Omitir la covarianza $c_{14}$ daría un error estándar equivocado, porque $\hat\beta_1$ y $\hat\beta_4$ están correlacionados.
+\end{enumerate}
+\end{solucion}
+
+\pregunta{4}{Distribución y dependencia de los errores}{14}
+\begin{enumerate}
+  \item Calcula $m_2$, $m_3$, $m_4$, la asimetría $S$, la curtosis $K$, el exceso de curtosis y el estadístico de Jarque--Bera. Contrasta normalidad.
+  \item Calcula el estadístico de Durbin--Watson y $\hat\rho\approx1-DW/2$. Decide con $d_L$ y $d_U$.
+\end{enumerate}
+
+\begin{solucion}
+\begin{enumerate}
+  \item $m_2=17.2105/60=0.2868$, $m_3=-2.3848/60=-0.0397$ y $m_4=14.7359/60=0.2456$. Entonces $S=m_3/m_2^{3/2}=-0.2587$, $K=m_4/m_2^2=2.9850$ y el exceso es $K-3=-0.0150$. $H_0$: los errores son normales; $H_1$: no lo son. $JB=\dfrac{60}{6}\Bigl(S^2+\dfrac{(K-3)^2}{4}\Bigr)=10\,(0.0669+0.0001)=0.6699$, con distribución asintótica $\chi^2_2$ bajo $H_0$. Como $0.670<5.991$, no se rechaza $H_0$: los residuos son compatibles con la normalidad; la asimetría y el exceso de curtosis son pequeños. Con $n=60$ la prueba es asintótica y tiene poca potencia.
+  \item $DW=22.4649/17.2105=1.3053$ y $\hat\rho\approx1-1.3053/2=0.3473$. $H_0$: no hay autocorrelación de primer orden; $H_1$: hay autocorrelación positiva. Como $DW=1.305<d_L=1.444$, se rechaza $H_0$: hay evidencia de autocorrelación positiva. Un mes con consumo mayor que el previsto tiende a ir seguido de otro igual. Durbin--Watson exige regresoras estrictamente exógenas y deja una zona sin decisión; la prueba de Breusch--Godfrey no tiene esas limitaciones.
+\end{enumerate}
+\end{solucion}
+
+\pregunta{5}{Diagnóstico del modelo}{18}
+\begin{enumerate}
+  \item Realiza la prueba de Breusch--Pagan.
+  \item Realiza la prueba de Breusch--Godfrey de orden uno. ¿Coincide con Durbin--Watson?
+  \item Calcula los cuatro VIF de dos maneras: con $1/(1-R_j^2)$ y con $S_{xx,j}\,c_{jj}$, donde $S_{xx,j}=(X^\top X)_{jj}-(X^\top X)_{0j}^2/n$ se obtiene de la primera fila y la diagonal de $X^\top X$. Contrasta la significancia de cada regresión auxiliar e interpreta.
+\end{enumerate}
+
+\begin{solucion}
+\begin{enumerate}
+  \item $H_0:\mathrm{Var}(u_t\mid X)=\sigma^2$ (homocedasticidad); $H_1$: la varianza depende de las regresoras. $LM_{BP}=nR^2_{aux}=60\times0.0391=2.346\sim\chi^2_4$ bajo $H_0$. Como $2.346<9.488$, no se rechaza $H_0$. No hay evidencia de heterocedasticidad: la varianza del error no depende de las regresoras.
+  \item $H_0$: no hay autocorrelación de primer orden ($\rho=0$); $H_1:\rho\neq0$. $LM_{BG}=(n-1)R^2_{aux}=59\times0.1278=7.543\sim\chi^2_1$ bajo $H_0$. Como $7.543>3.841$, se rechaza $H_0$. Hay autocorrelación de primer orden, en acuerdo con Durbin--Watson y con $\hat\rho\approx0.35$. MCO sigue siendo insesgado, pero los errores estándar convencionales no son válidos: hay que usar errores estándar HAC (Newey--West) o modelar la dinámica, por ejemplo con $Y_{t-1}$ como regresora.
+  \item Con $S_{xx,X}=533.1478-(-3.52)^2/60$, y de igual modo para las demás:
+
+  \begin{center}
+  \begin{tabular}{@{}lrrrrrr@{}}
+  \toprule
+  Regresora & $R_j^2$ & $1/(1-R_j^2)$ & $S_{xx,j}$ & $c_{jj}$ & $S_{xx,j}c_{jj}$ & $F_{aux}$\\
+  \midrule
+  $X$ & $0.4335$ & $1.765$ & $532.9413$ & $3.31\times10^{-3}$ & $1.764$ & $14.28$\\
+  $Z$ & $0.0310$ & $1.032$ & $119.7753$ & $8.62\times10^{-3}$ & $1.032$ & $0.60$\\
+  $D$ & $0.0048$ & $1.005$ & $15.0000$ & $6.70\times10^{-2}$ & $1.005$ & $0.09$\\
+  $XD$ & $0.4208$ & $1.726$ & $223.4569$ & $7.73\times10^{-3}$ & $1.727$ & $13.56$\\
+  \bottomrule
+  \end{tabular}
+  \end{center}
+
+  Para cada auxiliar, $H_0$: la regresora no tiene relación lineal con las otras tres; $F_{aux}=\dfrac{R_j^2/3}{(1-R_j^2)/56}\sim F_{3,56}$, con valor crítico $2.769$. Las auxiliares de $X$ y de $XD$ son significativas ($F=14.28$ y $F=13.56$), porque $XD$ se construye con $X$; las de $Z$ y $D$ no lo son. Aun así, todos los VIF son menores que 2: la varianza de cada $\hat\beta_j$ crece a lo más 1.77 veces respecto de regresoras sin correlación. Una auxiliar significativa no implica multicolinealidad severa. Las dos columnas de VIF coinciden salvo por el redondeo de $c_{jj}$.
+\end{enumerate}
+\end{solucion}
+
+\pregunta{6}{Omisión de variables}{10}
+Compara el modelo completo con el modelo de $Y$ sobre $X$ y $Z$. Indica las restricciones, calcula la prueba $F$ parcial, decide y explica qué consecuencias tendría usar el modelo restringido.
+
+\begin{solucion}
+Las restricciones son $H_0:\beta_3=\beta_4=0$ ($q=2$) contra $H_1$: al menos una es distinta de cero.
+\[
+F=\frac{(SSE_R-SSE_C)/2}{SSE_C/55}=\frac{(43.5911-17.2105)/2}{17.2105/55}=42.153\sim F_{2,55}.
+\]
+Como $42.153>3.165$, se rechaza $H_0$: el sistema de gestión de energía importa, aunque $\hat\beta_3$ no fuera significativo por separado. El modelo restringido explica el 84.3\,\% de la variación frente al 93.8\,\% del completo. Omitir $XD$, que está correlacionada con $X$, sesgaría $\hat\beta_1$: mezclaría las dos sensibilidades en una sola.
+\end{solucion}
+
+\pregunta{7}{Estabilidad entre subperiodos}{8}
+Realiza la prueba de Chow para los bloques 1 a 30 y 31 a 60. Escribe $H_0$ como igualdad de los cinco parámetros, calcula el estadístico, decide y comenta qué implica el resultado para la gerencia de la planta.
+
+\begin{solucion}
+$H_0$: los cinco parámetros $(\beta_0,\dots,\beta_4)$ son iguales en los dos bloques; $H_1$: al menos uno cambia. Con $SSE_P=SSE=17.2105$ del modelo con los 60 datos,
+\[
+F_{Chow}=\frac{[SSE_P-(SSE_1+SSE_2)]/5}{(SSE_1+SSE_2)/(60-10)}=\frac{(17.2105-15.0859)/5}{15.0859/50}=1.408\sim F_{5,50}.
+\]
+Como $1.408<2.400$, no se rechaza $H_0$. No hay evidencia de que la renovación del aire acondicionado en el mes 31 haya cambiado los parámetros: la gerencia puede usar una sola ecuación para todo el periodo. Un rechazo obligaría a estimar un modelo por bloque, o a agregar una indicadora del bloque y sus interacciones. La prueba presupone igual varianza en los dos bloques: aquí $SSE_1/25=0.258$ y $SSE_2/25=0.345$ son parecidas. La autocorrelación detectada también afecta la validez exacta de la $F$.
+\end{solucion}
+
+\pregunta{8}{Síntesis}{8}
+Clasifica los indicadores y pruebas que usaste según la propiedad que estudian, y distingue las pruebas formales de los indicadores. Con base en tus resultados, ¿qué cambiarías del modelo o de la forma de hacer inferencia? Explica por qué una $R^2$ alta no garantiza que la inferencia sea válida.
+
+\begin{solucion}
+\emph{Significancia}: pruebas $t$, $F$ global y $F$ parcial. \emph{Supuestos sobre los errores}: Jarque--Bera (normalidad), Breusch--Pagan (homocedasticidad), Durbin--Watson y Breusch--Godfrey (autocorrelación). \emph{Estabilidad}: Chow. \emph{Indicadores sin distribución de referencia}: $R^2$, $R^2$ ajustada, $s$ y VIF; las $F$ de las auxiliares sí son pruebas, pero de relación lineal, no de multicolinealidad severa. En este caso, el único supuesto que falla es la independencia de los errores: las pruebas $t$ y $F$ deben repetirse con errores estándar HAC, o el modelo debe incluir dinámica. La especificación con $D$ y $XD$ es preferible a la restringida y los parámetros son estables. Una $R^2$ de $0.94$ solo mide el ajuste: los errores estándar y las pruebas dependen de los supuestos sobre $u_t$, que una $R^2$ alta no garantiza.
+\end{solucion}

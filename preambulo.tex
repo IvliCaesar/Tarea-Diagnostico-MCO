@@ -1,0 +1,37 @@
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-nodecimaldot]{babel}
+\usepackage{lmodern,microtype}
+\usepackage{amsmath,amssymb}
+\usepackage[margin=2.2cm]{geometry}
+\usepackage{booktabs,array,enumitem}
+\usepackage{graphicx,xcolor}
+\usepackage{url}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em}
+\renewcommand{\arraystretch}{1.15}
+\setlist[enumerate,1]{label=\alph*),leftmargin=2em,itemsep=0.25em}
+\setcounter{MaxMatrixCols}{12}
+\definecolor{azul}{RGB}{0,60,170}
+\newenvironment{solucion}{\par\color{azul}\textbf{Solución.}\space}{\par\medskip}
+\newcommand{\pregunta}[3]{\par\medskip\textbf{#1. #2 (#3 puntos).}\space}
+\newcommand{\nota}[1]{\par\medskip\textbf{#1.}\space}
+
+\newcommand{\logoUP}{%
+  \IfFileExists{logo_up.png}{\includegraphics[width=\linewidth]{logo_up}}{%
+    \framebox[\linewidth]{\rule{0pt}{2.2cm}\small Logo UP}}}
+\newcommand{\encabezado}[1]{%
+  \noindent
+  \begin{minipage}[c]{0.18\linewidth}\centering\logoUP\end{minipage}%
+  \hfill
+  \begin{minipage}[c]{0.60\linewidth}
+    \centering
+    {\bfseries UNIVERSIDAD PANAMERICANA}\\[5pt]
+    {\bfseries #1}\\[5pt]
+    {\bfseries FUNDAMENTOS DE ECONOMETRÍA}\\[5pt]
+    Dr. César Galindo -- Otoño 2026
+  \end{minipage}%
+  \hfill
+  \begin{minipage}[c]{0.18\linewidth}\centering\logoUP\end{minipage}
+  \par\vspace{0.8em}}
